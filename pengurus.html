@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pengurus - Kampung Wae Rua</title>
+    <style>
+        * { 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+        }
+        body { 
+            background-color: #f4f6f9; 
+            padding: 12px; 
+            color: #333;
+        }
+
+        /* Top Banner */
+        .top-banner { 
+            background: linear-gradient(135deg, #1a237e, #283593); 
+            color: white; 
+            padding: 14px 18px; 
+            border-radius: 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: bold; 
+            margin-bottom: 12px; 
+            font-size: 15px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .menu-toggle-btn { 
+            background: rgba(255, 255, 255, 0.15); 
+            border: none; 
+            color: white; 
+            font-size: 18px; 
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer; 
+            transition: background 0.2s;
+        }
+        .menu-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Nav Menu */
+        .nav-menu { 
+            background: white; 
+            border-radius: 10px; 
+            padding: 8px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            display: none; 
+            border: 1px solid #e0e0e0; 
+        }
+        .nav-menu.show { 
+            display: block; 
+        }
+        .nav-item { 
+            padding: 10px 14px; 
+            margin-bottom: 4px; 
+            border-radius: 6px; 
+            color: #444; 
+            font-size: 14px; 
+            text-decoration: none; 
+            display: block; 
+            transition: all 0.2s;
+        }
+        .nav-item:hover {
+            background: #f0f2f5;
+        }
+        .nav-item.active { 
+            background: #e8eaf6; 
+            color: #1a237e; 
+            font-weight: bold; 
+        }
+
+        /* Filter Section */
+        .filter-card {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .filter-card label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+        .filter-card select {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        /* Cards */
+        .card { 
+            background: white; 
+            padding: 16px; 
+            border-radius: 10px; 
+            margin-bottom: 15px; 
+            border: 1px solid #e0e0e0; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04); 
+        }
+        .card h3 { 
+            font-size: 15px; 
+            color: #1a237e; 
+            margin-bottom: 14px; 
+            border-bottom: 2px solid #e8eaf6; 
+            padding-bottom: 8px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Badge Status */
+        .badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: normal;
+        }
+
+        /* Form Controls */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .form-group label {
+            font-size: 12px;
+            color: #555;
+            font-weight: 600;
+        }
+        .form-group input, .form-group select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .btn {
+            background: #1a237e;
+            color: white;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #283593;
+        }
+        .btn-danger {
+            background: #c62828;
+            padding: 4px 8px;
+            font-size: 11px;
+        }
+        .btn-edit {
+            background: #f57c00;
+            padding: 4px 8px;
+            font-size: 11px;
+        }
+
+        /* Table */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 8px; 
+            font-size: 13px; 
+        }
+        table th, table td { 
+            border: 1px solid #e0e0e0; 
+            padding: 10px; 
+            text-align: left; 
+        }
+        table th { 
+            background: #e8eaf6; 
+            color: #1a237e; 
+            font-weight: 600;
+        }
+        table tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        table tbody tr:hover {
+            background-color: #f0f4f9;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Banner -->
+    <div class="top-banner">
+        <span>🎉 Monitoring Pesta & Galang Dana</span>
+        <button class="menu-toggle-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <!-- Navigasi -->
+    <div class="nav-menu" id="navMenu">
+        <a href="index.html" class="nav-item">🏠 Beranda / Portal Pesta</a>
+        <a href="datakk.html" class="nav-item">👥 Data KK & Kehadiran</a>
+        <a href="kas.html" class="nav-item">📝 Buku Umum (Kas Pesta)</a>
+        <a href="pengurus.html" class="nav-item active">⚙️ Kelola Pengurus Pesta</a>
+        <a href="laporan.html" class="nav-item">📊 Laporan Tahunan / Bulanan</a>
+    </div>
+
+    <!-- Filter Periode Monitoring Pesta -->
+    <div class="filter-card">
+        <label for="tahunPesta">📅 Periode Pesta:</label>
+        <select id="tahunPesta">
+            <option value="2026" selected>Tahun 2026</option>
+            <option value="2025">Tahun 2025</option>
+            <option value="2024">Tahun 2024</option>
+        </select>
+
+        <select id="bulanPesta">
+            <option value="semua">Semua Bulan</option>
+            <option value="oktober" selected>Oktober (Pesta Utama)</option>
+            <option value="desember">Desember (Pesta Akhir Tahun)</option>
+        </select>
+    </div>
+
+    <!-- Form Input / Tambah Pengurus Pesta -->
+    <div class="card">
+        <h3>➕ Tambah / Perbarui Pengurus Pesta</h3>
+        <form id="formPengurus" onsubmit="simpanPengurus(event)">
+            <input type="hidden" id="editIndex" value="">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Jabatan</label>
+                    <select id="inputJabatan" onchange="cekOpsiJabatan()" required>
+                        <option value="">-- Pilih Jabatan --</option>
+                        <option value="Ketua Panitia">Ketua Panitia</option>
+                        <option value="Wakil Ketua">Wakil Ketua</option>
+                        <option value="Sekretaris">Sekretaris</option>
+                        <option value="Bendahara">Bendahara</option>
+                        <option value="Seksi Perlengkapan">Seksi Perlengkapan</option>
+                        <option value="Seksi Konsumsi">Seksi Konsumsi</option>
+                        <option value="Seksi Acara">Seksi Acara</option>
+                        <option value="Lainnya">✏️ Ketik Manual (Lainnya)...</option>
+                    </select>
+                </div>
+
+                <!-- Input manual yang akan muncul jika memilih "Lainnya" -->
+                <div class="form-group hidden" id="groupJabatanLainnya">
+                    <label>Ketik Nama Jabatan Manual</label>
+                    <input type="text" id="inputJabatanManual" placeholder="Contoh: Seksi Keamanan / Penasehat">
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Pengurus</label>
+                    <input type="text" id="inputNama" placeholder="Contoh: Bpk. Markus" required>
+                </div>
+                <div class="form-group">
+                    <label>No. WhatsApp / HP</label>
+                    <input type="tel" id="inputKontak" placeholder="081234567890">
+                </div>
+            </div>
+            <button type="submit" class="btn" id="btnSimpan">Simpan Pengurus</button>
+        </form>
+    </div>
+
+    <!-- Daftar Pengurus Pesta -->
+    <div class="card">
+        <h3>
+            ⚙️ Susunan Panitia Pesta - Kampung Wae Rua
+            <span class="badge">Status: Berjalan</span>
+        </h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Jabatan</th>
+                        <th>Nama Pengurus</th>
+                        <th>Kontak</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelPengurus">
+                    <!-- Data akan dimuat otomatis via JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Data awal default jika LocalStorage masih kosong
+        let dataPengurus = JSON.parse(localStorage.getItem('waeRua_pengurus')) || [
+            { jabatan: "Ketua Panitia", nama: "Bpk. Markus", kontak: "0812-3456-7890" },
+            { jabatan: "Sekretaris", nama: "Bpk. Stefanus", kontak: "0813-9876-5432" },
+            { jabatan: "Bendahara", nama: "Bpk. Fransiskus", kontak: "0821-1122-3344" }
+        ];
+
+        function toggleMenu() { 
+            document.getElementById('navMenu').classList.toggle('show'); 
+        }
+
+        // Fungsi untuk mendeteksi pilihan "Lainnya" agar form ketik manual muncul
+        function cekOpsiJabatan() {
+            const selectJabatan = document.getElementById('inputJabatan').value;
+            const groupManual = document.getElementById('groupJabatanLainnya');
+            const inputManual = document.getElementById('inputJabatanManual');
+
+            if (selectJabatan === "Lainnya") {
+                groupManual.classList.remove('hidden');
+                inputManual.required = true;
+            } else {
+                groupManual.classList.add('hidden');
+                inputManual.required = false;
+                inputManual.value = "";
+            }
+        }
+
+        function renderTabel() {
+            const tbody = document.getElementById('tabelPengurus');
+            tbody.innerHTML = "";
+
+            dataPengurus.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><b>${item.jabatan}</b></td>
+                    <td>${item.nama}</td>
+                    <td>${item.kontak}</td>
+                    <td>
+                        <button class="btn btn-edit" onclick="editPengurus(${index})">Edit</button>
+                        <button class="btn btn-danger" onclick="hapusPengurus(${index})">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Simpan ke LocalStorage
+            localStorage.setItem('waeRua_pengurus', JSON.stringify(dataPengurus));
+        }
+
+        function simpanPengurus(event) {
+            event.preventDefault();
+            const editIndex = document.getElementById('editIndex').value;
+            
+            let jabatan = document.getElementById('inputJabatan').value;
+            // Jika memilih manual, ambil teks dari input manual
+            if (jabatan === "Lainnya") {
+                jabatan = document.getElementById('inputJabatanManual').value;
+            }
+
+            const nama = document.getElementById('inputNama').value;
+            const kontak = document.getElementById('inputKontak').value || '-';
+
+            if (editIndex === "") {
+                // Tambah baru
+                dataPengurus.push({ jabatan, nama, kontak });
+            } else {
+                // Update data
+                dataPengurus[editIndex] = { jabatan, nama, kontak };
+                document.getElementById('editIndex').value = "";
+                document.getElementById('btnSimpan').innerText = "Simpan Pengurus";
+            }
+
+            renderTabel();
+            document.getElementById('formPengurus').reset();
+            document.getElementById('groupJabatanLainnya').classList.add('hidden');
+        }
+
+        function editPengurus(index) {
+            const item = dataPengurus[index];
+            const selectJabatan = document.getElementById('inputJabatan');
+            
+            // Cek apakah jabatan yang ada di data termasuk dalam opsi pilihan select
+            let optionExists = Array.from(selectJabatan.options).some(option => option.value === item.jabatan);
+
+            if (optionExists) {
+                selectJabatan.value = item.jabatan;
+                document.getElementById('groupJabatanLainnya').classList.add('hidden');
+            } else {
+                // Jika jabatan kustom/manual, set select ke "Lainnya" dan tampilkan isinya di input manual
+                selectJabatan.value = "Lainnya";
+                document.getElementById('groupJabatanLainnya').classList.remove('hidden');
+                document.getElementById('inputJabatanManual').value = item.jabatan;
+            }
+
+            document.getElementById('inputNama').value = item.nama;
+            document.getElementById('inputKontak').value = item.kontak === '-' ? '' : item.kontak;
+            document.getElementById('editIndex').value = index;
+            document.getElementById('btnSimpan').innerText = "Perbarui Pengurus";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function hapusPengurus(index) {
+            if (confirm("Yakin ingin menghapus pengurus ini?")) {
+                dataPengurus.splice(index, 1);
+                renderTabel();
+            }
+        }
+
+        // Jalankan saat halaman dimuat
+        window.onload = renderTabel;
+    </script>
+</body>
+      </html>
+                      
