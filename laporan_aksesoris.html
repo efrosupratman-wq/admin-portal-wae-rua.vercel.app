@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Rincian Iuran & Adat - Kampung Wae Rua</title>
+    <style>
+        * { 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+        }
+        body { 
+            background-color: #f4f6f9; 
+            padding: 12px; 
+            color: #333;
+        }
+
+        /* Top Banner */
+        .top-banner { 
+            background: linear-gradient(135deg, #1a237e, #283593); 
+            color: white; 
+            padding: 14px 18px; 
+            border-radius: 10px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: bold; 
+            margin-bottom: 12px; 
+            font-size: 15px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .menu-toggle-btn { 
+            background: rgba(255, 255, 255, 0.15); 
+            border: none; 
+            color: white; 
+            font-size: 18px; 
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer; 
+            transition: background 0.2s;
+        }
+        .menu-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Nav Menu */
+        .nav-menu { 
+            background: white; 
+            border-radius: 10px; 
+            padding: 8px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            display: none; 
+            border: 1px solid #e0e0e0; 
+        }
+        .nav-menu.show { 
+            display: block; 
+        }
+        .nav-item { 
+            padding: 10px 14px; 
+            margin-bottom: 4px; 
+            border-radius: 6px; 
+            color: #444; 
+            font-size: 14px; 
+            text-decoration: none; 
+            display: block; 
+            transition: all 0.2s;
+        }
+        .nav-item:hover {
+            background: #f0f2f5;
+        }
+        .nav-item.active { 
+            background: #e8eaf6; 
+            color: #1a237e; 
+            font-weight: bold; 
+        }
+
+        /* Cards */
+        .card { 
+            background: white; 
+            padding: 16px; 
+            border-radius: 10px; 
+            margin-bottom: 15px; 
+            border: 1px solid #e0e0e0; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04); 
+        }
+        .card h3 { 
+            font-size: 15px; 
+            color: #1a237e; 
+            margin-bottom: 14px; 
+            border-bottom: 2px solid #e8eaf6; 
+            padding-bottom: 8px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Ringkasan / Summary Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .summary-box {
+            background: #e8eaf6;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #1a237e;
+        }
+        .summary-box h4 {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 4px;
+        }
+        .summary-box p {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+
+        /* Form Controls */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .form-group label {
+            font-size: 12px;
+            color: #555;
+            font-weight: 600;
+        }
+        .form-group input, .form-group select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .btn {
+            background: #1a237e;
+            color: white;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #283593;
+        }
+        .btn-danger {
+            background: #c62828;
+            padding: 4px 8px;
+            font-size: 11px;
+        }
+
+        /* Table */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 8px; 
+            font-size: 13px; 
+        }
+        table th, table td { 
+            border: 1px solid #e0e0e0; 
+            padding: 9px; 
+            text-align: left; 
+        }
+        table th { 
+            background: #e8eaf6; 
+            color: #1a237e; 
+            font-weight: 600;
+        }
+        table tbody tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        .text-right {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Banner -->
+    <div class="top-banner">
+        <span>🎉 Rincian Dana Khusus & Adat Pesta</span>
+        <button class="menu-toggle-btn" onclick="toggleMenu()">☰ Menu</button>
+    </div>
+
+    <!-- Navigasi -->
+    <div class="nav-menu" id="navMenu">
+        <a href="index.html" class="nav-item">🏠 Beranda / Portal Pesta</a>
+        <a href="datakk.html" class="nav-item">👥 Data KK & Kehadiran</a>
+        <a href="kas.html" class="nav-item">📝 Buku Umum (Kas Pesta)</a>
+        <a href="pengurus.html" class="nav-item">⚙️ Kelola Pengurus Pesta</a>
+        <a href="laporan_aksesoris.html" class="nav-item active">📊 Laporan Dana Khusus & Adat</a>
+    </div>
+
+    <!-- Ringkasan Total Dana Khusus -->
+    <div class="summary-grid">
+        <div class="summary-box">
+            <h4>Total Uang Beli Sate</h4>
+            <p id="totalBeliSate">Rp 0</p>
+        </div>
+        <div class="summary-box">
+            <h4>Total Teing Hang</h4>
+            <p id="totalTeingHang">Rp 0</p>
+        </div>
+        <div class="summary-box">
+            <h4>Total Wali Kepok</h4>
+            <p id="totalWaliKepok">Rp 0</p>
+        </div>
+        <div class="summary-box">
+            <h4>Total Keseluruhan</h4>
+            <p id="totalSemua">Rp 0</p>
+        </div>
+    </div>
+
+    <!-- Form Input Pemasukan Dana Khusus / Adat -->
+    <div class="card">
+        <h3>➕ Catat Masuk Dana Khusus / Adat Pesta</h3>
+        <form id="formDanaKhusus" onsubmit="tambahData(event)">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Jenis Dana / Kategori</label>
+                    <select id="inputJenis" required>
+                        <option value="">-- Pilih Jenis Dana --</option>
+                        <option value="Uang Beli Sate">Uang Beli Sate</option>
+                        <option value="Teing Hang">Teing Hang</option>
+                        <option value="Wali Kepok">Wali Kepok</option>
+                        <option value="Sumbangan Lainnya">Sumbangan / Aksesoris Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nama Pemberi / Warga / KK</label>
+                    <input type="text" id="inputNama" placeholder="Contoh: Bpk. Blasius" required>
+                </div>
+                <div class="form-group">
+                    <label>Jumlah (Rp)</label>
+                    <input type="number" id="inputJumlah" placeholder="Contoh: 150000" required>
+                </div>
+            </div>
+            <button type="submit" class="btn">Simpan Rincian</button>
+        </form>
+    </div>
+
+    <!-- Tabel Rincian Data -->
+    <div class="card">
+        <h3>📋 Daftar Penerimaan Dana Khusus & Adat</h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Jenis Dana</th>
+                        <th>Nama Pemberi</th>
+                        <th class="text-right">Jumlah (Rp)</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelDanaKhusus">
+                    <!-- Data dimuat otomatis -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Data awal default tersimpan di LocalStorage khusus dana khusus/adat
+        let dataDana = JSON.parse(localStorage.getItem('waeRua_danaKhusus')) || [
+            { jenis: "Uang Beli Sate", nama: "Bpk. Markus", jumlah: 250000 },
+            { jenis: "Teing Hang", nama: "Ibu Maria", jumlah: 150000 },
+            { jenis: "Wali Kepok", nama: "Bpk. Fransiskus", jumlah: 300000 }
+        ];
+
+        function toggleMenu() { 
+            document.getElementById('navMenu').classList.toggle('show'); 
+        }
+
+        function formatRupiah(angka) {
+            return "Rp " + Number(angka).toLocaleString('id-ID');
+        }
+
+        function renderRincian() {
+            const tbody = document.getElementById('tabelDanaKhusus');
+            tbody.innerHTML = "";
+
+            let sumBeliSate = 0;
+            let sumTeingHang = 0;
+            let sumWaliKepok = 0;
+
+            dataDana.forEach((item, index) => {
+                // Hitung total per kategori
+                if (item.jenis === "Uang Beli Sate") sumBeliSate += Number(item.jumlah);
+                if (item.jenis === "Teing Hang") sumTeingHang += Number(item.jumlah);
+                if (item.jenis === "Wali Kepok") sumWaliKepok += Number(item.jumlah);
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><b>${item.jenis}</b></td>
+                    <td>${item.nama}</td>
+                    <td class="text-right">${formatRupiah(item.jumlah)}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="hapusData(${index})">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            let totalSemua = sumBeliSate + sumTeingHang + sumWaliKepok;
+
+            // Tampilkan di ringkasan kotak atas
+            document.getElementById('totalBeliSate').innerText = formatRupiah(sumBeliSate);
+            document.getElementById('totalTeingHang').innerText = formatRupiah(sumTeingHang);
+            document.getElementById('totalWaliKepok').innerText = formatRupiah(sumWaliKepok);
+            document.getElementById('totalSemua').innerText = formatRupiah(totalSemua);
+
+            // Simpan ke LocalStorage
+            localStorage.setItem('waeRua_danaKhusus', JSON.stringify(dataDana));
+        }
+
+        function tambahData(event) {
+            event.preventDefault();
+            const jenis = document.getElementById('inputJenis').value;
+            const nama = document.getElementById('inputNama').value;
+            const jumlah = document.getElementById('inputJumlah').value;
+
+            dataDana.push({ jenis, nama, jumlah });
+            renderRincian();
+            document.getElementById('formDanaKhusus').reset();
+        }
+
+        function hapusData(index) {
+            if (confirm("Yakin ingin menghapus catatan rincian ini?")) {
+                dataDana.splice(index, 1);
+                renderRincian();
+            }
+        }
+
+        // Jalankan saat halaman dimuat
+        window.onload = renderRincian;
+    </script>
+</body>
+</html>
