@@ -1,0 +1,299 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  text-decoration: none;
+}
+
+body {
+  background-color: #f1f5f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.mobile-app-container {
+  width: 100%;
+  max-width: 412px;
+  height: 100vh;
+  max-height: 870px;
+  background-color: #f8fafc;
+  position: relative;
+  border-radius: 28px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+}
+
+/* Header Biru Utama */
+.portal-header {
+  background: linear-gradient(180deg, #1d4ed8 0%, #2563eb 100%);
+  padding: 24px 20px 70px 20px;
+  color: #ffffff;
+  position: relative;
+}
+
+.user-profile-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  object-fit: cover;
+  background-color: #cbd5e1;
+}
+
+.user-text-info h2 {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.user-text-info p {
+  font-size: 11px;
+  color: #93c5fd;
+  margin-top: 2px;
+}
+
+/* Badge Dosen / Informasi Tambahan */
+.info-pill {
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 6px 14px;
+  border-radius: 20px;
+  display: inline-block;
+  font-size: 11px;
+  color: #ffffff;
+}
+
+/* Main Content Wrapper (Menimpa Header) */
+.portal-content {
+  padding: 0 16px 80px 16px;
+  margin-top: -55px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Card Jadwal Mengambang (Floating Card) */
+.card-schedule-floating {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
+  border: 2px solid #38bdf8;
+}
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.schedule-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #0284c7;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.date-badge {
+  font-size: 11px;
+  color: #0284c7;
+  font-weight: 600;
+}
+
+.schedule-detail h3 {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 6px;
+}
+
+.schedule-subinfo {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 4px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.badge-tag {
+  background-color: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  color: #475569;
+}
+
+/* Menu Grid dengan Lingkaran Warna-warni */
+.menu-grid-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.icon-grid-4col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px 10px;
+  text-align: center;
+}
+
+.grid-menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.circle-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.grid-menu-item span {
+  font-size: 11px;
+  color: #334155;
+  font-weight: 500;
+}
+
+/* Warna Lingkaran Tombol Menu */
+.bg-orange { background: linear-gradient(135deg, #ff7e5f, #feb47b); }
+.bg-cyan   { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+.bg-purple { background: linear-gradient(135deg, #8a2387, #e94057); }
+.bg-teal   { background: linear-gradient(135deg, #11998e, #38ef7d); }
+.bg-pink   { background: linear-gradient(135deg, #f857a6, #ff5858); }
+.bg-blue   { background: linear-gradient(135deg, #2193b0, #6dd5ed); }
+.bg-amber  { background: linear-gradient(135deg, #f7b731, #ffa801); }
+.bg-violet { background: linear-gradient(135deg, #654ea3, #eaafc8); }
+
+/* Indicators Pagination Dots */
+.dot-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #cbd5e1;
+}
+
+.dot.active {
+  width: 20px;
+  border-radius: 10px;
+  background-color: #2563eb;
+}
+
+/* Dual Widget Section di Bawah */
+.widget-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 12px;
+}
+
+.widget-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.widget-empty {
+  text-align: center;
+  padding: 15px 0;
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.amount-text {
+  font-size: 12px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-top: 10px;
+}
+
+/* Kendala & Masukan Banner */
+.feedback-text {
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+.feedback-text a {
+  color: #1d4ed8;
+  font-weight: 700;
+  display: block;
+}
+
+/* Bottom Navigation Bar */
+.bottom-navigation {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 60px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom-left-radius: 28px;
+  border-bottom-right-radius: 28px;
+}
+
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #94a3b8;
+  font-size: 10px;
+  gap: 2px;
+}
+
+.nav-link.active {
+  color: #1d4ed8;
+  font-weight: 700;
+    }
+  
