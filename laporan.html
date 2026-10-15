@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WÁE RUA KOMUNITAS - Panel Laporan & Monitoring Admin</title>
+    <!-- FontAwesome Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
+        body { background-color: #f4f6f9; padding: 12px; }
+
+        .top-banner { 
+            background: #1a237e; 
+            color: white; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold; 
+            margin-bottom: 10px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            font-size: 14px;
+        }
+
+        .menu-toggle-btn { background: transparent; border: none; color: white; font-size: 22px; cursor: pointer; }
+
+        .nav-menu { 
+            background: white; 
+            border-radius: 8px; 
+            padding: 8px; 
+            margin-bottom: 15px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            display: none; 
+            border: 1px solid #e0e0e0;
+        }
+        .nav-menu.show { display: block; }
+        .nav-item { padding: 10px 12px; margin-bottom: 4px; border-radius: 6px; color: #444; font-size: 14px; text-decoration: none; display: block; font-weight: 500; }
+        .nav-item.active { background: #e8eaf6; color: #1a237e; font-weight: bold; }
+
+        /* Card Section */
+        .card-box { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; border: 1px solid #e0e0e0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card-title { font-size: 14px; font-weight: bold; color: #1a237e; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e8eaf6; padding-bottom: 6px; }
+
+        /* Grid Statistik Admin */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-card { background: white; padding: 12px; border-radius: 8px; border-left: 4px solid #1a237e; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .stat-card h4 { font-size: 11px; color: #666; font-weight: normal; }
+        .stat-card p { font-size: 16px; font-weight: bold; color: #1a237e; margin-top: 4px; }
+
+        /* Form Control / Filter */
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; font-size: 12px; color: #555; margin-bottom: 4px; font-weight: 600; }
+        .form-control { width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; background: #fafafa; outline: none; }
+
+        /* Button Action */
+        .btn-print { background: #2e7d32; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .btn-delete { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; cursor: pointer; }
+
+        /* Table */
+        .table-responsive { width: 100%; overflow-x: auto; max-height: 350px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background-color: #f5f5f5; color: #333; font-weight: bold; position: sticky; top: 0; }
+
+        .text-masuk { color: #2e7d32; font-weight: bold; }
+        .text-keluar { color: #c62828; font-weight: bold; }
+        .badge-tag { background: #e8eaf6; color: #1a237e; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+
+        @media print {
+            .top-banner, .nav-menu, .btn-print, .btn-delete, .form-group { display: none !important; }
+            body { padding: 0; background: white; }
+            .card-box { box-shadow: none; border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BANNER -->
+    <div class="top-banner">
+        <span>Laporan Keuangan & Balas Budi (ADMIN)</span>
+        <button class="menu-toggle-btn" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <!-- NAV MENU ADMIN -->
+    <div class="nav-menu" id="navMenu">
+        <a href="index.html" class="nav-item">🏠 Beranda</a>
+        <a href="datakk.html" class="nav-item">👥 Data KK</a>
+        <a href="kas.html" class="nav-item">📝 Buku Umum (Kas)</a>
+        <a href="pengurus.html" class="nav-item">⚙️ Kelola Pengurus</a>
+        <a href="laporan.html" class="nav-item active">📊 Laporan</a>
+    </div>
+
+    <!-- FILTER ACARA PESTA & TAHUN -->
+    <div class="card-box">
+        <div class="card-title">
+            <span><i class="fa-solid fa-filter"></i> Filter Rekapitulasi Berdasarkan Jadwal Pesta</span>
+            <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print"></i> Cetak Laporan</button>
+        </div>
+        <div class="form-group">
+            <label>Pilih Acara Pesta Yang Berlangsung:</label>
+            <select id="selectPestaAdmin" class="form-control" onchange="filterLaporanAdmin()">
+                <!-- Opsi diisi otomatis dari jadwal index admin secara permanen -->
+            </select>
+        </div>
+    </div>
+
+    <!-- RINGKASAN REKAP KEUANGAN ADMIN -->
+    <div class="stats-grid">
+        <div class="stat-card" style="border-left-color: #2e7d32;">
+            <h4>Total Kas Masuk</h4>
+            <p id="totalMasukAdmin" class="text-masuk">Rp 0</p>
+        </div>
+        <div class="stat-card" style="border-left-color: #c62828;">
+            <h4>Total Kas Keluar</h4>
+            <p id="totalKeluarAdmin" class="text-keluar">Rp 0</p>
+        </div>
+        <div class="stat-card" style="border-left-color: #1a237e;">
+            <h4>Saldo Bersih Pesta</h4>
+            <p id="saldoBersihAdmin">Rp 0</p>
+        </div>
+        <div class="stat-card" style="border-left-color: #fb8c00;">
+            <h4>Jumlah Partisipan</h4>
+            <p id="totalPartisipanAdmin">0 KK</p>
+        </div>
+    </div>
+
+    <!-- TABEL CATATAN SEMUA TRANSAKSI MASUK & KELUAR -->
+    <div class="card-box">
+        <div class="card-title">
+            <span><i class="fa-solid fa-list-check"></i> Jurnal Lengkap Kas (Masuk & Keluar)</span>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Warga / Keterangan</th>
+                        <th>Pesta</th>
+                        <th>Jenis</th>
+                        <th>Nominal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelKasAdminBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TABEL MONITORING WARGA SISA KEWAJIBAN -->
+    <div class="card-box">
+        <div class="card-title">
+            <span><i class="fa-solid fa-users"></i> Monitoring Partisipasi Anggota (Min. Rp 150rb)</span>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Anggota (KK)</th>
+                        <th>Patokan Kewajiban</th>
+                        <th>Total Menyumbang</th>
+                        <th>Status Sesuai</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelMonitoringWargaBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() { 
+            document.getElementById('navMenu').classList.toggle('show'); 
+        }
+
+        // INISIALISASI DROPDOWN MENYESUAIKAN JADWAL DARI INDEX ADMIN (PERMANEN LINTAS TAHUN)
+        function inisialisasiPestaDropdownAdmin() {
+            const listKas = JSON.parse(localStorage.getItem('bukuKas_WaeRua')) || [];
+            const daftarAcara = JSON.parse(localStorage.getItem('jadwalPesta_WaeRua')) || [];
+            const selectPesta = document.getElementById('selectPestaAdmin');
+
+            const nilaiTerpilihSebelumnya = selectPesta.value;
+            selectPesta.innerHTML = '<option value="Semua">-- Semua Pesta & Kas Komunitas --</option>';
+
+            const pestaMap = new Map();
+
+            // 1. Ambil dari jadwal resmi admin secara fleksibel tanpa batasan bulan (aman dan permanen)
+            daftarAcara.forEach(item => {
+                if (item.nama) {
+                    pestaMap.set(item.nama, {
+                        nama: item.nama,
+                        tanggal: item.tanggal || 'Tanpa Tanggal'
+                    });
+                }
+            });
+
+            // 2. Arsip cadangan dari riwayat buku kas
+            listKas.forEach(k => {
+                if (k.pesta && !pestaMap.has(k.pesta)) {
+                    pestaMap.set(k.pesta, {
+                        nama: k.pesta,
+                        tanggal: k.tanggal || 'Arsip Kas'
+                    });
+                }
+            });
+
+            if (pestaMap.size === 0) {
+                selectPesta.innerHTML += '<option value="" disabled>Belum ada jadwal pesta dibuat di Beranda Admin</option>';
+            } else {
+                pestaMap.forEach((info, namaPesta) => {
+                    selectPesta.innerHTML += `<option value="${namaPesta}">Pesta Bpk. ${namaPesta} [${info.tanggal}]</option>`;
+                });
+            }
+
+            if (nilaiTerpilihSebelumnya) {
+                selectPesta.value = nilaiTerpilihSebelumnya;
+            }
+        }
+
+        function filterLaporanAdmin() {
+            const pestaFokus = document.getElementById('selectPestaAdmin').value;
+            muatLaporanAdmin(pestaFokus);
+        }
+
+        function muatLaporanAdmin(pestaFokus = "Semua") {
+            const listKas = JSON.parse(localStorage.getItem('bukuKas_WaeRua')) || [];
+            const dataKK = JSON.parse(localStorage.getItem('dataKK_WaeRua')) || [
+                { id: 1, nama: "Bpk. Yosep", rt: "RT 01 / Wae Rua", beras: 20, status: "Sudah" },
+                { id: 2, nama: "Bpk. Anton", rt: "RT 02 / Wae Rua", beras: 20, status: "Belum" }
+            ];
+
+            const tbodyKas = document.getElementById('tabelKasAdminBody');
+            const tbodyWarga = document.getElementById('tabelMonitoringWargaBody');
+
+            let filteredKas = listKas;
+            if (pestaFokus !== "Semua") {
+                filteredKas = listKas.filter(k => k.pesta === pestaFokus);
+            }
+
+            let totalMasuk = 0;
+            let totalKeluar = 0;
+            let petaPenyumbang = {};
+
+            tbodyKas.innerHTML = '';
+            if (filteredKas.length === 0) {
+                tbodyKas.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#888; padding:12px;">Belum ada riwayat transaksi untuk pesta ini.</td></tr>`;
+            } else {
+                filteredKas.forEach((item, index) => {
+                    const isMasuk = item.jenis === 'Masuk';
+                    const nominal = parseInt(item.nominal) || 0;
+
+                    if (isMasuk) {
+                        totalMasuk += nominal;
+                        if(item.warga) {
+                            petaPenyumbang[item.warga] = (petaPenyumbang[item.warga] || 0) + nominal;
+                        }
+                    } else {
+                        totalKeluar += nominal;
+                    }
+
+                    tbodyKas.innerHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${item.tanggal || '-'}</td>
+                            <td><strong>${item.warga || item.keterangan}</strong></td>
+                            <td><span class="badge-tag">${item.pesta || '-'}</span></td>
+                            <td><span class="${isMasuk ? 'text-masuk' : 'text-keluar'}">${item.jenis}</span></td>
+                            <td>Rp ${nominal.toLocaleString('id-ID')}</td>
+                            <td>
+                                <button class="btn-delete" onclick="hapusTransaksi(${item.id})">Hapus</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // Update statistik rekapitulasi
+            document.getElementById('totalMasukAdmin').innerText = `Rp ${totalMasuk.toLocaleString('id-ID')}`;
+            document.getElementById('totalKeluarAdmin').innerText = `Rp ${totalKeluar.toLocaleString('id-ID')}`;
+            document.getElementById('saldoBersihAdmin').innerText = `Rp ${(totalMasuk - totalKeluar).toLocaleString('id-ID')}`;
+            
+            const jumlahPenyumbangUnik = Object.keys(petaPenyumbang).length;
+            document.getElementById('totalPartisipanAdmin').innerText = `${jumlahPenyumbangUnik} KK`;
+
+            // Render Tabel Monitoring Warga (Berdasarkan Aturan Min. Rp 150.000)
+            tbodyWarga.innerHTML = '';
+            dataKK.forEach((warga, index) => {
+                const totalSumbang = petaPenyumbang[warga.nama] || 0;
+                const statusLunas = totalSumbang >= 150000;
+
+                tbodyWarga.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${warga.nama}</strong></td>
+                        <td>Rp 150.000</td>
+                        <td><span class="${totalSumbang > 0 ? 'text-masuk' : ''}">Rp ${totalSumbang.toLocaleString('id-ID')}</span></td>
+                        <td>
+                            ${statusLunas 
+                                ? '<span style="color:#2e7d32; font-weight:bold;">✓ Terpenuhi</span>' 
+                                : totalSumbang > 0 
+                                    ? '<span style="color:#fb8c00; font-weight:bold;">! Belum Cukup</span>' 
+                                    : '<span style="color:#888;">Belum Menyumbang</span>'}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function hapusTransaksi(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus transaksi kas ini?')) {
+                let listKas = JSON.parse(localStorage.getItem('bukuKas_WaeRua')) || [];
+                listKas = listKas.filter(item => item.id !== id);
+                localStorage.setItem('bukuKas_WaeRua', JSON.stringify(listKas));
+                
+                filterLaporanAdmin();
+                alert('Transaksi berhasil dihapus!');
+            }
+        }
+
+        // Inisialisasi awal saat halaman dimuat
+        inisialisasiPestaDropdownAdmin();
+        muatLaporanAdmin();
+
+        // Listener sinkronisasi otomatis antar halaman via localStorage
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'bukuKas_WaeRua' || e.key === 'jadwalPesta_WaeRua' || e.key === 'dataKK_WaeRua') {
+                inisialisasiPestaDropdownAdmin();
+                filterLaporanAdmin();
+            }
+        });
+    </script>
+</body>
+</html>
